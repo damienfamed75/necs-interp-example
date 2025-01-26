@@ -25,28 +25,23 @@ func main() {
 		log.Printf("Message Error: %s", err.Error())
 	})
 
-	world := donburi.NewWorld()
-	e := ecs.NewECS(world)
-
-	srvsync.UseEsync(world)
-
-	e.AddSystem(newMoveSystem())
+	e := ecs.NewECS(donburi.NewWorld())
+	srvsync.UseEsync(e.World)
 
 	// Register a contract that both the client and server understand
 	shared.RegisterComponents()
+	e.AddSystem(newMoveSystem())
 
-	nonInterpEntity := world.Create(
-		shared.PositionComponent,
-	)
-	shared.PositionComponent.Get(world.Entry(nonInterpEntity)).Y = 40
-	srvsync.NetworkSync(world, &nonInterpEntity, shared.PositionComponent)
+	nonInterpEntity := e.World.Create(shared.PositionComponent)
+	shared.PositionComponent.Get(e.World.Entry(nonInterpEntity)).Y = 40
+	srvsync.NetworkSync(e.World, &nonInterpEntity, shared.PositionComponent)
 
-	interpEntity := world.Create(
-		shared.PositionComponent,
-	)
-	shared.PositionComponent.Get(world.Entry(interpEntity)).Y = 220
-	srvsync.NetworkSync(world, &interpEntity, shared.PositionComponent)
-	srvsync.NetworkInterp(world, &interpEntity, shared.PositionComponent)
+	// Create an entity normally and specify that we want to tell the client
+	// to interpolate its Position component.
+	interpEntity := e.World.Create(shared.PositionComponent)
+	shared.PositionComponent.Get(e.World.Entry(interpEntity)).Y = 220
+	srvsync.NetworkSync(e.World, &interpEntity, shared.PositionComponent)
+	srvsync.NetworkInterp(e.World, &interpEntity, shared.PositionComponent)
 
 	go func() {
 		for range time.NewTicker(time.Second / _tickRate).C {
