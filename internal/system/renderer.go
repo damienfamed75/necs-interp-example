@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"image/color"
 	_ "image/png"
 	"log/slog"
 
@@ -39,6 +40,7 @@ func (r *RenderSystem) Draw(e *ecs.ECS, screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	w, _ := ebiten.WindowSize()
 
+	screen.Fill(color.White)
 	for entry := range r.query.Iter(e.World) {
 		position := shared.PositionComponent.Get(entry)
 
