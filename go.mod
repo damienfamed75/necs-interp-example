@@ -2,7 +2,7 @@ module github.com/damienfamed75/necs-interp-example
 
 go 1.23.0
 
-replace github.com/leap-fish/necs => github.com/gimlet-studios/necs v0.0.3-0.20250130200502-b3ff91c54100
+replace github.com/leap-fish/necs => github.com/gimlet-studios/necs v0.0.3-0.20250130215840-8d4c819e4a5e
 
 require (
 	github.com/coder/websocket v1.8.12

@@ -33,7 +33,7 @@ func main() {
 	e.AddSystem(newMoveSystem())
 
 	nonInterpEntity := e.World.Create(shared.PositionComponent)
-	shared.PositionComponent.Get(e.World.Entry(nonInterpEntity)).Y = 40
+	shared.PositionComponent.Get(e.World.Entry(nonInterpEntity)).Y = 20
 	srvsync.NetworkSync(e.World, &nonInterpEntity, shared.PositionComponent)
 
 	// Create an entity normally and specify that we want to tell the client
