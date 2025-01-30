@@ -40,8 +40,7 @@ func main() {
 	// to interpolate its Position component.
 	interpEntity := e.World.Create(shared.PositionComponent)
 	shared.PositionComponent.Get(e.World.Entry(interpEntity)).Y = 220
-	srvsync.NetworkSync(e.World, &interpEntity, shared.PositionComponent)
-	srvsync.NetworkInterp(e.World, &interpEntity, shared.PositionComponent)
+	srvsync.NetworkSync(e.World, &interpEntity, srvsync.WithInterp(shared.PositionComponent))
 
 	go func() {
 		for range time.NewTicker(time.Second / _tickRate).C {
